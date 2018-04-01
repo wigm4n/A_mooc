@@ -1,0 +1,28 @@
+<!--index.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+  <form class="form" action="/find/searchingRequest" method="POST">
+      <div class="form-group">
+          <label for="Поиск">Введите название необходимого курса:</label>
+          <input type="text" class="form-control" id="research" name="research" placeholder="Например, базы данных">
+          <button type="submit" class="btn btn-primary">Найти</button>
+      </div>
+  </form>
+
+  <!--Loop over the `payload` variable, which is the list of articles-->
+  {{range .payload }}
+    <!--Create the link for the article based on its ID-->
+    <a href="/article/view/{{.ID}}">
+      <!--Display the title of the article -->
+      <h2>{{.Title}}</h2>
+    </a>
+    <!--Display the content of the article-->
+    <p>{{.Host}}</p>
+    <!--Display the content of the article-->
+    <p>{{.URL}}</p>
+  {{end}}
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}
