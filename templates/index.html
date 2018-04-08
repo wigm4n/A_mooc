@@ -1,28 +1,149 @@
 <!--index.html-->
 
-<!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
 
-  <form class="form" action="/find/searchingRequest" method="POST">
-      <div class="form-group">
-          <label for="Поиск">Введите название необходимого курса:</label>
-          <input type="text" class="form-control" id="research" name="research" placeholder="Например, базы данных">
-          <button type="submit" class="btn btn-primary">Найти</button>
+
+  <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="margin-top: 100px;">
+          <a class="navbar-brand" href="#"><h4>Найди курс для себя!</h4></a>
+
+          <div class="collapse navbar-collapse" id="navbarColor01">
+              <ul class="navbar-nav mr-auto">
+              </ul>
+              <form class="form-inline my-2 my-lg-0 col-lg-9" action="/find/searchingRequest" method="POST">
+                  <input class="form-control mr-sm-3 col-lg-9" type="text" id="research" name="research" placeholder="Например, Java">
+                  <button class="btn btn-secondary my-2 my-sm-0 col-lg-2" type="submit">Поиск</button>
+              </form>
+          </div>
+      </nav>
+
+      <div class="row">
+          <div class="col-lg-4" style="margin-top: 40px;">
+              <form>
+                  <fieldset>
+                      <fieldset class="form-group">
+                          <legend>Предпочитаемые платформы</legend>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Coursera
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  edX
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Udacity
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Udemy
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Stepik
+                              </label>
+                          </div>
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <legend>Предпочитаемый язык</legend>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Русский
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Английский
+                              </label>
+                          </div>
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <legend>Уровень курса</legend>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Начинающий (Beginner)
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Промежуточный (Intermediate)
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Продвинутый (Advanced)
+                              </label>
+                          </div>
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <legend>Продолжительность курса</legend>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Менее одного месяца
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  От одного до трех месяцев
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Более трех месяцев
+                              </label>
+                          </div>
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <legend>Доступность</legend>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Бесплатно
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="">
+                                  Платно
+                              </label>
+                          </div>
+                      </fieldset>
+                  </fieldset>
+              </form>
+          </div>
+          <div class="col-lg-7 offset-lg-1" style="margin-top: 40px;">
+
+              <!--Loop over the `payload` variable, which is the list of articles-->
+              {{range .payload }}
+                  <div class="card bg-light mb-3">
+                      <a class="card-header" href="/article/view/{{.ID}}"><h3>{{.Title}}</h3></a>
+                      <div class="card-body">
+                          <p class="card-title">{{.Host}}</p>
+                          <p class="card-text">{{.URL}}</p>
+                      </div>
+                  </div>
+              {{end}}
+          </div>
       </div>
-  </form>
+  </div>
 
-  <!--Loop over the `payload` variable, which is the list of articles-->
-  {{range .payload }}
-    <!--Create the link for the article based on its ID-->
-    <a href="/article/view/{{.ID}}">
-      <!--Display the title of the article -->
-      <h2>{{.Title}}</h2>
-    </a>
-    <!--Display the content of the article-->
-    <p>{{.Host}}</p>
-    <!--Display the content of the article-->
-    <p>{{.URL}}</p>
-  {{end}}
 
-<!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}

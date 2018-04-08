@@ -1,28 +1,22 @@
 <!--article.html-->
 
-<!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
 
-<!--Display the title of the article-->
+
 <h1>{{.payload.Title}}</h1>
 
-<!--Display the content of the article-->
-<p>
-    <b>Описание курса: </b>
-    {{.payload.Content}}
-</p>
-
-<!--Display the host of the article-->
-<p>
+<div class="jumbotron" style="margin-top: 80px;">
+    <h1 class="display-3">{{.payload.Title}}</h1>
+    <p class="lead">{{.payload.Content}}</p>
+    <hr class="my-4">
+    <p>Скоро здесь будет дополнительная информация!</p>
+    <p><a href={{.payload.Picture}}>Ссылка на картинку курса</a></p>
     <b>Курс предоставил: </b>
-        <a href={{.payload.HostURL}}>{{.payload.Host}}</a>
-</p>
+    <a href={{.payload.HostURL}}>{{.payload.Host}}</a>
+    <p class="lead" style="margin-top: 30px;">
+        <a class="btn btn-primary btn-lg" href="{{.payload.URL}}" role="button" >Познакомиться с курсом поближе!</a>
+    </p>
+</div>
 
-<!--Display the URL of the article-->
-<p><a href={{.payload.URL}}>Ссылка на курс</a></p>
 
-<!--Display the Picture of the article-->
-<p><a href={{.payload.Picture}}>Ссылка на картинку курса</a></p>
-
-<!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}

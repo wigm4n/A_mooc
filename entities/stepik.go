@@ -5,9 +5,7 @@ import (
 	"time"
 	"encoding/json"
 	"io/ioutil"
-	"strings"
 	"strconv"
-	"fmt"
 )
 
 type CourseStepic struct {
@@ -42,25 +40,19 @@ type CourseInResult struct {
 }
 
 var myClient = &http.Client{Timeout: 10 * time.Second}
-var Url = "https://stepik.org/api/courses/67"
-var HostURL = "https://stepik.org/catalog"
-var Host = "Stepik"
+var HostURLStepik = "https://stepik.org/catalog"
+var HostStepik = "Stepik"
 var token = "jwirIzekAg1v5MSVcVbSyWe3AlWhiB"
 
-func stepikWork(req string) {
-	//get url terminal:
-	//curl -X POST -d "grant_type=client_credentials" -u"XiohmB3FE94BiQQw8huu2QzeqSF1SabDwMA9ZTvh:pjNHdemfaL01Yz0mhBgF2uVNX6YOPBepC0Jnj24E74yDTdBhBgkHSnL2ALagAeTwLaR9V4OzkdrXrHVFdwGaWTWvlQz1usDIQ81bqOxTJyqpSZJKWXOJF8yX0Z51gsvw" https://stepik.org/oauth2/token/
+//get url terminal:
+//curl -X POST -d "grant_type=client_credentials" -u"XiohmB3FE94BiQQw8huu2QzeqSF1SabDwMA9ZTvh:pjNHdemfaL01Yz0mhBgF2uVNX6YOPBepC0Jnj24E74yDTdBhBgkHSnL2ALagAeTwLaR9V4OzkdrXrHVFdwGaWTWvlQz1usDIQ81bqOxTJyqpSZJKWXOJF8yX0Z51gsvw" https://stepik.org/oauth2/token/
 
-	/*courses := GetStepicCourseByTitle(req)
-	for i:= 0; i < len(courses); i++ {
-		courses[i].CreateCourse()
-	}*/
-}
-
-func GetStepicCourseByTitle(title string) (courses []CourseInResult) {
+func GetStepicCourseByTitle(title string) (courses []Course) {
 	pageNum := 0
 	hasNextPage := true
-	lastID, _ := GetNumberOfCourses()
+	//For database
+	//lastID, _ := GetNumberOfCourses()
+	lastID := len(FoundCourses)
 
 	for hasNextPage {
 		pageNum += 1
@@ -69,39 +61,14 @@ func GetStepicCourseByTitle(title string) (courses []CourseInResult) {
 		hasNextPage = data.Meta.Has_next
 
 		for i := 0; i < len(data.Data); i++ {
-
-			//courseTitle := data.Data[i].Title
-
-			//if IsContain(title, courseTitle) == true
-			courseTitle := data.Data[i].Title
-			courseID := data.Data[i].CourseID
-			URLapi := GetAPICourseURLByID(courseID)
-			URL := GetCourseURL(courseID)
-			picture := data.Data[i].Picture
-
 			lastID += 1
+			courseID := data.Data[i].CourseID
 
-			courseForm := CourseInResult{ID:lastID, CourseID:courseID,
-			Title:courseTitle, Host:Host, URL:URL, URLapi:URLapi, Picture:picture}
+			courseForm := Course{ID:lastID, Title:data.Data[i].Title, Host:HostStepik,
+			HostURL:HostURLStepik, URL:GetCourseURL(courseID), URLApi:GetAPICourseURLByID(courseID),
+			Picture:data.Data[i].Picture}
 
 			courses = append(courses, courseForm)
-
-			fmt.Println("Added:", courseForm)
-		}
-	}
-	return
-}
-
-func IsContain(title string, originalTitle string) (contains bool) {
-	contains = false
-	arr := strings.Split(title, " ")
-	arr2 := strings.Split(originalTitle, " ")
-
-	for i := 0; i < len(arr); i++ {
-		for j := 0; j < len(arr2); j++ {
-			if arr[i] == arr2[j] {
-				return true
-			}
 		}
 	}
 	return
@@ -150,7 +117,7 @@ func (courseInStepic CourseInStepic) StepicCourseToCourseForm(lastID int) (cours
 	course.ID = lastID
 	course.Content = courseInStepic.Summary
 	course.Title = courseInStepic.Title
-	course.Host = Host
+	course.Host = HostStepik
 	course.URL = courseInStepic.URL
 	return
 }

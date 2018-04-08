@@ -24,6 +24,7 @@ func main() {
 
 	//req := "java"
 	//stepikWork(req)
+	//entities.GetUdacityCourseByTitle("Java")
 
 	// Start serving the application
 	router.Run()
@@ -85,5 +86,10 @@ func initializeRoutes() {
 	findRoutes := router.Group("/find")
 	{
 		findRoutes.POST("/searchingRequest", handlers.SearchingRequest)
+	}
+
+	personalAreaRoutes := router.Group("/personal")
+	{
+		personalAreaRoutes.POST("/submitting", handlers.SubmitSubscription)
 	}
 }

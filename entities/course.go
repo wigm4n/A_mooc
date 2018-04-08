@@ -12,8 +12,11 @@ type Course struct {
 	Host	string
 	HostURL	string
 	URL		string
+	URLApi  string
 	Picture	string
 }
+
+var FoundCourses = []Course{}
 
 func GetSomeCourses(len int) (courses[]Course, err error) {
 	rows, err := db.Query("SELECT ID, title, content, host, url FROM courses")

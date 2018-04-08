@@ -1,0 +1,136 @@
+<!--personal-area.html-->
+
+
+{{ template "header.html" .}}
+
+<div class="row">
+    <div class="col-lg-5" style="margin-top: 90px;">
+        <h3>Создать новую подписку</h3>
+        <form class="form" action="/personal/submitting" method="POST">
+            <fieldset>
+                <fieldset class="form-group" style="margin-top: 17px;">
+                    <h5>Предпочитаемые платформы</h5>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="coursera" value="a3">
+                            Coursera
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            edX
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Udacity
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Udemy
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Stepik
+                        </label>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <h5>Предпочитаемый язык</h5>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Русский
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Английский
+                        </label>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <h5>Уровень курса</h5>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Начинающий (Beginner)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Промежуточный (Intermediate)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Продвинутый (Advanced)
+                        </label>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <h5>Продолжительность курса</h5>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Менее одного месяца
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            От одного до трех месяцев
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Более трех месяцев
+                        </label>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <h5>Доступность</h5>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Бесплатно
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">
+                            Платно
+                        </label>
+                    </div>
+                </fieldset>
+                <button class="btn btn-secondary col-lg-9" type="submit">Создать</button>
+            </fieldset>
+        </form>
+    </div>
+    <div class="col-lg-7" style="margin-top: 90px;">
+      <h3>Список подписок</h3>
+        <div class="card" style="margin-top: 30px;">
+            <div class="card-body">
+                <h4 class="card-title">Java. Introduction</h4>
+                <h6 class="card-subtitle mb-2 text-muted">27.09.2017</h6>
+                <p class="card-text">Параметры: <br>Coursera, начинающий уровень, менее одного месяца, платно<br>
+                Уведомления каждую неделю</p>
+                <a href="#" class="card-link">Удалить подписку</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{{ template "footer.html" .}}

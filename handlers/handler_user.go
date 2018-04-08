@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"net/http"
 	"../entities"
+	"gopkg.in/gomail.v2"
 )
 
 func GenerateSessionToken() string {
@@ -17,7 +18,7 @@ func GenerateSessionToken() string {
 
 func ShowRegistrationPage(c *gin.Context) {
 	entities.Render(c, gin.H{
-		"title": "Register"}, "register.html")
+		"title": "Регистрация"}, "register.html")
 }
 
 func Register(c *gin.Context) {
@@ -40,8 +41,10 @@ func Register(c *gin.Context) {
 			c.SetCookie("token", token, 3600, "", "", false, true)
 			c.Set("is_logged_in", true)
 
+			NotifyAboutRegistration(c)
+
 			entities.Render(c, gin.H{
-				"title": "Successful registration & Login"}, "login-successful.html")
+				"title": "Успешная регистрация и вход"}, "login-successful.html")
 
 		} else {
 			// If the username/password combination is invalid,
@@ -55,7 +58,7 @@ func Register(c *gin.Context) {
 }
 
 func ShowLoginPage(c *gin.Context) {
-	entities.Render(c, gin.H{ "title": "Login"}, "login.html")
+	entities.Render(c, gin.H{ "title": "Вход"}, "login.html")
 }
 
 func PerformLogin(c *gin.Context) {
@@ -66,14 +69,30 @@ func PerformLogin(c *gin.Context) {
 		token := GenerateSessionToken()
 		c.SetCookie("token", token, 3600, "", "", false, true)
 		c.Set("is_logged_in", true)
-
 		entities.Render(c, gin.H{
-			"title": "Successful Login"}, "login-successful.html")
+			"title": "Успешный вход"}, "login-successful.html")
 
 	} else {
 		c.HTML(http.StatusBadRequest, "login.html", gin.H{
 			"ErrorTitle":   "Login Failed",
 			"ErrorMessage": "Invalid credentials provided"})
+	}
+}
+
+func NotifyAboutRegistration(c *gin.Context) {
+	m := gomail.NewMessage()
+	to := "chyps97@gmail.com"
+	m.SetHeader("From", "mooc.courses.aggregator@gmail.com")
+	m.SetHeader("To", to)
+	m.SetHeader("Subject", "Уведомление о регистрации")
+	m.SetBody("text/html", "Доброго времени дня, " + to + "!<p>Вы только что зарегистрировались" +
+		" на <b>Агрегаторе MOOC-курсов.</b><p>Если Вы хотите получать уведомления на Ваш email, перейдите в " +
+			"личный кабинет и укажите, что конкретно Вас интересует.<p>Хорошего дня,<br> Ваш Агрегатор MOOC-курсов.")
+
+	d := gomail.NewDialer("smtp.gmail.com", 587, "mooc.courses.aggregator@gmail.com", "12345678qwertY")
+
+	if err := d.DialAndSend(m); err != nil {
+		panic(err)
 	}
 }
 
