@@ -36,10 +36,8 @@ func initializeRoutes() {
 	// indicating whether the request was from an authenticated user or not
 	router.Use(auth.SetUserStatus())
 
-
-
 	// Handle the index route
-	router.GET("/", handlers.ShowIndexPage)
+	router.GET("/", handlers.ShowMainPage)
 
 	// Group user related routes together
 	userRoutes := router.Group("/u")
@@ -76,7 +74,7 @@ func initializeRoutes() {
 		// Handle the GET requests at /article/create
 		// Show the article creation page
 		// Ensure that the user is logged in by using the middleware
-		articleRoutes.GET("/create", auth.EnsureLoggedIn(), handlers.ShowCourseCreationPage)
+		articleRoutes.GET("/create", auth.EnsureLoggedIn(), handlers.ShowPersonalAreaPage)
 
 		// Handle POST requests at /article/create
 		// Ensure that the user is logged in by using the middleware

@@ -9,34 +9,48 @@
         <form class="form" action="/personal/submitting" method="POST">
             <fieldset>
                 <fieldset class="form-group" style="margin-top: 17px;">
+                    <label><h5>Введите тему, которая вам интересна</h5></label>
+                    <input class="form-control col-lg-10" type="text" name="teg" placeholder="Например, Java" required>
+                </fieldset>
+                <fieldset class="form-group">
+                    <div class="form-group">
+                        <label for="selectFrequency"><h5>Укажите частоту получения уведомлений</h5></label>
+                        <select class="form-control col-lg-10" id="selectFrequency" name="selectFrequency">
+                            <option value="1">Раз в день</option>
+                            <option value="7">Раз в неделю</option>
+                            <option value="30">Раз в месяц</option>
+                        </select>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
                     <h5>Предпочитаемые платформы</h5>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="coursera" value="a3">
+                            <input class="form-check-input" type="checkbox" name="coursera" value="Coursera">
                             Coursera
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="edx" value="edX">
                             edX
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="udacity" value="Udacity">
                             Udacity
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="udemy" value="Udemy">
                             Udemy
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="stepik" value="Stepik">
                             Stepik
                         </label>
                     </div>
@@ -45,13 +59,13 @@
                     <h5>Предпочитаемый язык</h5>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="rus" value="Русский">
                             Русский
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="eng" value="Английский">
                             Английский
                         </label>
                     </div>
@@ -60,19 +74,19 @@
                     <h5>Уровень курса</h5>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="beginner" value="Начинающий">
                             Начинающий (Beginner)
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="intermediate" value="Промежуточный">
                             Промежуточный (Intermediate)
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="advanced" value="Продвинутый">
                             Продвинутый (Advanced)
                         </label>
                     </div>
@@ -81,19 +95,22 @@
                     <h5>Продолжительность курса</h5>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="less_m"
+                                   value="Менее одного месяца">
                             Менее одного месяца
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="one_three_m"
+                                   value="От одного до трех месяцев">
                             От одного до трех месяцев
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="more_m"
+                                   value="Более трех месяцев">
                             Более трех месяцев
                         </label>
                     </div>
@@ -102,33 +119,37 @@
                     <h5>Доступность</h5>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="free" value="Бесплатно">
                             Бесплатно
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="chargeable" value="Платно">
                             Платно
                         </label>
                     </div>
                 </fieldset>
-                <button class="btn btn-secondary col-lg-9" type="submit">Создать</button>
+                <button class="btn btn-secondary col-lg-10" type="submit">Создать подписку</button>
             </fieldset>
         </form>
     </div>
     <div class="col-lg-7" style="margin-top: 90px;">
-      <h3>Список подписок</h3>
-        <div class="card" style="margin-top: 30px;">
-            <div class="card-body">
-                <h4 class="card-title">Java. Introduction</h4>
-                <h6 class="card-subtitle mb-2 text-muted">27.09.2017</h6>
-                <p class="card-text">Параметры: <br>Coursera, начинающий уровень, менее одного месяца, платно<br>
-                Уведомления каждую неделю</p>
-                <a href="#" class="card-link">Удалить подписку</a>
+      <h3>Список существующих подписок</h3>
+         {{range .payload }}
+            <div class="card" style="margin-top: 30px;">
+                <div class="card-body">
+                    <h3 class="card-title">Тема: {{.Teg}}</h3>
+                    <h6 class="card-subtitle mb-2 text-muted">От: {{.Date.Day}} {{.Date.Month}} {{.Date.Year}}</h6>
+                    <label class="card-text">Площадка: <i>{{.Platforms}}</i></label><br>
+                    <label class="card-text">Языки: <i>{{.Languages}}</i></label><br>
+                    <label class="card-text">Уровень: <i>{{.Levels}}</i></label><br>
+                    <label class="card-text">Продолжительность: <i>{{.Durations}}</i></label><br>
+                    <label class="card-text">Доступность курса: <i>{{.Availabilities}}</i></label><br>
+                    <a href="#" class="card-link">Удалить подписку</a>
+                </div>
             </div>
-        </div>
-
+        {{end}}
     </div>
 </div>
 

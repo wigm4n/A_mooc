@@ -4,7 +4,6 @@ import (
 	"log"
 	"errors"
 	"strings"
-	"fmt"
 )
 
 type User struct {
@@ -32,7 +31,7 @@ func (user *User) RegisterNewUser() (err error) {
 		return
 	}
 	defer stmt.Close()
-	_, err = stmt.Query(user.ID, user.Email, user.Password)
+	_, err = stmt.Query(user.ID, user.Email, Encrypt(user.Password))
 	return
 }
 
@@ -75,12 +74,31 @@ func GetAllUsers() (users []User, err error) {
 
 func IsUserValid(email string, password string) (exists bool) {
 	userList, _ := GetAllUsers()
-	fmt.Print(userList)
-	fmt.Print(email, password)
 	for _, u := range userList {
-		if u.Email == email && u.Password == password {
+		if u.Email == email && u.Password == Encrypt(password) {
 			return true
 		}
 	}
 	return false
 }
+
+func GetUserByEmail(email string) (user User, err error) {
+	err = db.QueryRow("SELECT id, email FROM users WHERE email = $1", email).
+		Scan(&user.ID, &user.Email)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	return
+}
+
+func GetUserById(id int) (user User, err error) {
+	err = db.QueryRow("SELECT id, email FROM users WHERE id = $1", id).
+		Scan(&user.ID, &user.Email)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	return
+}
+

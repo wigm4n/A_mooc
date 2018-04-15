@@ -4,52 +4,36 @@
 
 
   <div class="container">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="margin-top: 100px;">
-          <a class="navbar-brand" href="#"><h4>Найди курс для себя!</h4></a>
-
-          <div class="collapse navbar-collapse" id="navbarColor01">
-              <ul class="navbar-nav mr-auto">
-              </ul>
-              <form class="form-inline my-2 my-lg-0 col-lg-9" action="/find/searchingRequest" method="POST">
-                  <input class="form-control mr-sm-3 col-lg-9" type="text" id="research" name="research" placeholder="Например, Java">
+      <form class="form" action="/find/searchingRequest" method="POST">
+          <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="margin-top: 100px;">
+              <a class="navbar-brand" href="#"><h4>Найди курс для себя!</h4></a>
+              <div class="collapse navbar-collapse" id="navbarColor01">
+                  <ul class="navbar-nav mr-auto"> </ul>
+                  <input class="form-control mr-sm-3 col-lg-7" type="text" id="research" name="research" placeholder="Например, Java" required>
                   <button class="btn btn-secondary my-2 my-sm-0 col-lg-2" type="submit">Поиск</button>
-              </form>
-          </div>
-      </nav>
+              </div>
+          </nav>
 
-      <div class="row">
-          <div class="col-lg-4" style="margin-top: 40px;">
-              <form>
+          <div class="row">
+              <div class="col-lg-4" style="margin-top: 40px;">
                   <fieldset>
                       <fieldset class="form-group">
                           <legend>Предпочитаемые платформы</legend>
                           <div class="form-check">
                               <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
-                                  Coursera
-                              </label>
-                          </div>
-                          <div class="form-check">
-                              <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
-                                  edX
-                              </label>
-                          </div>
-                          <div class="form-check">
-                              <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
+                                  <input class="form-check-input" type="checkbox" name="udacity" value="Udacity">
                                   Udacity
                               </label>
                           </div>
                           <div class="form-check">
                               <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
+                                  <input class="form-check-input" type="checkbox" name="udemy" value="Udemy">
                                   Udemy
                               </label>
                           </div>
                           <div class="form-check">
                               <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
+                                  <input class="form-check-input" type="checkbox" name="stepik" value="Stepik">
                                   Stepik
                               </label>
                           </div>
@@ -58,13 +42,13 @@
                           <legend>Предпочитаемый язык</legend>
                           <div class="form-check">
                               <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
+                                  <input class="form-check-input" type="checkbox" name="rus" value="ru">
                                   Русский
                               </label>
                           </div>
                           <div class="form-check">
                               <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
+                                  <input class="form-check-input" type="checkbox" name="eng" value="en">
                                   Английский
                               </label>
                           </div>
@@ -73,77 +57,71 @@
                           <legend>Уровень курса</legend>
                           <div class="form-check">
                               <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
+                                  <input class="form-check-input" type="checkbox" name="beginner" value="beginner">
                                   Начинающий (Beginner)
                               </label>
                           </div>
                           <div class="form-check">
                               <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
+                                  <input class="form-check-input" type="checkbox" name="intermediate" value="intermediate">
                                   Промежуточный (Intermediate)
                               </label>
                           </div>
                           <div class="form-check">
                               <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
+                                  <input class="form-check-input" type="checkbox" name="advanced" value="advanced">
                                   Продвинутый (Advanced)
                               </label>
                           </div>
                       </fieldset>
-                      <fieldset class="form-group">
-                          <legend>Продолжительность курса</legend>
-                          <div class="form-check">
-                              <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
-                                  Менее одного месяца
-                              </label>
-                          </div>
-                          <div class="form-check">
-                              <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
-                                  От одного до трех месяцев
-                              </label>
-                          </div>
-                          <div class="form-check">
-                              <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
-                                  Более трех месяцев
-                              </label>
-                          </div>
-                      </fieldset>
+
                       <fieldset class="form-group">
                           <legend>Доступность</legend>
                           <div class="form-check">
                               <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
+                                  <input class="form-check-input" type="checkbox" name="free" value="Бесплатно">
                                   Бесплатно
                               </label>
                           </div>
                           <div class="form-check">
                               <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="">
+                                  <input class="form-check-input" type="checkbox" name="chargeable" value="Платно">
                                   Платно
                               </label>
                           </div>
                       </fieldset>
                   </fieldset>
-              </form>
-          </div>
-          <div class="col-lg-7 offset-lg-1" style="margin-top: 40px;">
+              </div>
+              <div class="col-lg-7 offset-lg-1" style="margin-top: 40px;">
 
-              <!--Loop over the `payload` variable, which is the list of articles-->
-              {{range .payload }}
-                  <div class="card bg-light mb-3">
-                      <a class="card-header" href="/article/view/{{.ID}}"><h3>{{.Title}}</h3></a>
-                      <div class="card-body">
-                          <p class="card-title">{{.Host}}</p>
-                          <p class="card-text">{{.URL}}</p>
+                  {{range .payload }}
+                      <div class="card bg-light mb-3">
+                          <a class="card-header" href="/article/view/{{.ID}}"><h3>{{.Title}}</h3></a>
+                          <div class="card-body">
+                              <p><b>Платформа:</b> <a href={{.HostURL}}>{{.Host}}</a></p>
+                              <p class="card-text"><b>Уровень курса: </b>{{.SkillLvl}}<br><b>Доступность:</b> {{.Price}}</p>
+                          </div>
                       </div>
-                  </div>
-              {{end}}
+                  {{end}}
+              </div>
           </div>
-      </div>
+      </form>
   </div>
+
+    <footer id="footer">
+        <div class="row" style="margin-top: 50px;">
+            <div class="col-lg-12">
+                <ul class="list-unstyled">
+                    <p><p></p>
+                    <li class="float-lg-right"><a href="#top">Вернуться наверх</a></li>
+                    <p>Автор веб-приложения: <a href="http://vk.com/wigm4n">Лобанов Илья</a>.</p>
+                    <p>Работа выполнена в рамках курсового проекта Факультета Компьютерных Наук <a href="https://hse.ru">Высшей Школы Экономики</a>.</p>
+                </ul>
+
+            </div>
+        </div>
+
+    </footer>
 
 
 {{ template "footer.html" .}}

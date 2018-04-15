@@ -6,38 +6,44 @@ import (
 )
 
 type Subscription struct {
-	ID			int
-	UserID 		int
-	Teg 		string
-	Params		string
-	Date		time.Time
-	Frequency	int
+	ID				int
+	UserID 			int
+	Teg 			string
+	Platforms		string
+	Languages		string
+	Levels			string
+	Durations		string
+	Availabilities	string
+	Date			time.Time
+	Frequency		int
 }
 
 func (user User) CreateSubscription(subscription Subscription) (err error) {
-	statement := "INSERT INTO subscriptions (id, userID, teg, params, date, frequency) " +
-		"VALUES ($1, $2, $3, $4, $5, $6)"
+	statement := "INSERT INTO subscriptions (id, userID, teg, platforms, languages, levels," +
+		" durations, availabilities, date, frequency) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)"
 	stmt, err := db.Prepare(statement)
 	if err != nil {
 		return
 	}
 	defer stmt.Close()
-	_, err = stmt.Exec(subscription.ID, user.ID, subscription.Teg, subscription.Params, subscription.Date,
-		subscription.Frequency)
+	_, err = stmt.Exec(subscription.ID, user.ID, subscription.Teg, subscription.Platforms,
+		subscription.Languages, subscription.Levels, subscription.Durations, subscription.Availabilities,
+			subscription.Date, subscription.Frequency)
 	return
 }
 
 func (user User) GetAllSubscriptionsByUser() (subscriptions []Subscription, err error) {
-	rows, err := db.Query("SELECT id, userID, teg, params, date, frequency FROM subscriptions " +
-		"WHERE userID = $1", user.ID)
+	rows, err := db.Query("SELECT id, userID, teg, platforms, languages, levels, durations," +
+		" availabilities, date, frequency FROM subscriptions WHERE userID = $1", user.ID)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	for rows.Next() {
 		var subscription Subscription
-		err = rows.Scan(&subscription.ID, &subscription.UserID, &subscription.Teg, &subscription.Params,
-			&subscription.Date, &subscription.Frequency)
+		err = rows.Scan(&subscription.ID, &subscription.UserID, &subscription.Teg, &subscription.Platforms,
+			&subscription.Languages, &subscription.Levels, &subscription.Durations, &subscription.Availabilities,
+				&subscription.Date, &subscription.Frequency)
 		subscriptions = append(subscriptions, subscription)
 	}
 	return
@@ -67,6 +73,19 @@ func (user User) DeleteAllSubscriptions() (err error) {
 	_, err = stmt.Exec(user.ID)
 	if err != nil {
 		return err
+	}
+	return
+}
+
+func GetNumberOfSubscriptions(id int) (count int, err error) {
+	count = 0
+	rows, err := db.Query("SELECT * FROM subscriptions WHERE userID = $1", id)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	for rows.Next() {
+		count += 1
 	}
 	return
 }

@@ -1,4 +1,4 @@
-<!--article.html-->
+<!--course.html-->
 
 {{ template "header.html" .}}
 
@@ -9,8 +9,7 @@
     <h1 class="display-3">{{.payload.Title}}</h1>
     <p class="lead">{{.payload.Content}}</p>
     <hr class="my-4">
-    <p>Скоро здесь будет дополнительная информация!</p>
-    <p><a href={{.payload.Picture}}>Ссылка на картинку курса</a></p>
+    <p><b>Стоимость:</b> {{.payload.Price}}<br><b>Время обучения:</b> {{.payload.Duration}}<br><b>Уровень курса:</b> {{.payload.SkillLvl}}</p>
     <b>Курс предоставил: </b>
     <a href={{.payload.HostURL}}>{{.payload.Host}}</a>
     <p class="lead" style="margin-top: 30px;">

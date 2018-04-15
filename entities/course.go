@@ -3,39 +3,24 @@ package entities
 import (
 	"log"
 	"fmt"
+	"strings"
 )
 
 type Course struct {
-	ID      int
-	Title   string
-	Content string
-	Host	string
-	HostURL	string
-	URL		string
-	URLApi  string
-	Picture	string
+	ID      	int
+	Title   	string
+	Content 	string
+	Host		string
+	HostURL		string
+	URL			string
+	URLApi  	string
+	Price   	string
+	Duration	string
+	Language	string
+	SkillLvl	string
 }
 
 var FoundCourses = []Course{}
-
-func GetSomeCourses(len int) (courses[]Course, err error) {
-	rows, err := db.Query("SELECT ID, title, content, host, url FROM courses")
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	count := 0
-	for rows.Next() {
-		if count == len {
-			break
-		}
-		var course Course
-		err = rows.Scan(&course.ID, &course.Title, &course.Content, &course.Host, &course.URL)
-		courses = append(courses, course)
-		count += 1
-	}
-	return
-}
 
 func GetNumberOfCourses() (count int, err error) {
 	count = 0
@@ -72,5 +57,21 @@ func GetCourseById(ID int) (course Course, err error) {
 		return
 	}
 	course.ID = ID
+	return
+}
+
+
+func IsContain(title string, originalTitle string) (contains bool) {
+	contains = false
+	arr := strings.Split(title, " ")
+	arr2 := strings.Split(originalTitle, " ")
+
+	for i := 0; i < len(arr); i++ {
+		for j := 0; j < len(arr2); j++ {
+			if arr[i] == arr2[j] {
+				return true
+			}
+		}
+	}
 	return
 }

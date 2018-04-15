@@ -2,6 +2,5 @@
   "user": "postgres",
   "password": "admin",
   "db_name": "A_mooc",
-  "port": "5433",
-  "key": "example key 1234"
+  "port": "5433"
 }

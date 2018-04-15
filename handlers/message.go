@@ -1,60 +1,21 @@
 package handlers
 
-// [START intro_1]
 import (
-	"bytes"
-	"fmt"
-	"net/http"
-
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/log"
-	"google.golang.org/appengine/mail"
+	"gopkg.in/gomail.v2"
 )
 
-func Confirm(w http.ResponseWriter, r *http.Request) {
-	ctx := appengine.NewContext(r)
-	addr := r.FormValue("mooc.courses.aggregator@gmail.com")
-	url := createConfirmationURL(r)
-	msg := &mail.Message{
-		Sender:  "Example.com Support <chyps97@gmail.com>",
-		To:      []string{addr},
-		Subject: "Confirm your registration",
-		Body:    fmt.Sprintf(confirmMessage, url),
+func NotifyAboutRegistration(email string) {
+	m := gomail.NewMessage()
+	m.SetHeader("From", "mooc.courses.aggregator@gmail.com")
+	m.SetHeader("To", email)
+	m.SetHeader("Subject", "Уведомление о регистрации")
+	m.SetBody("text/html", "Доброго времени дня, " + email + "!<p>Вы только что зарегистрировались" +
+		" на <b>Агрегаторе MOOC-курсов.</b><p>Если Вы хотите получать уведомления на Ваш email, перейдите в " +
+		"личный кабинет и укажите, что конкретно Вас интересует.<p>Хорошего дня,<br> Ваш Агрегатор MOOC-курсов.")
+
+	d := gomail.NewDialer("smtp.gmail.com", 587, "mooc.courses.aggregator@gmail.com", "12345678qwertY")
+
+	if err := d.DialAndSend(m); err != nil {
+		panic(err)
 	}
-	if err := mail.Send(ctx, msg); err != nil {
-		log.Errorf(ctx, "Couldn't send email: %v", err)
-	}
 }
-
-const confirmMessage = `
-Thank you for creating an account!
-Please confirm your email address by clicking on the link below:
-%s
-`
-
-// [END intro_1]
-
-func createConfirmationURL(r *http.Request) string {
-	return ""
-}
-
-// [START intro_3]
-func init() {
-	http.HandleFunc("/_ah/mail/", incomingMail)
-}
-
-// [END intro_3]
-
-// [START intro_4]
-func incomingMail(w http.ResponseWriter, r *http.Request) {
-	ctx := appengine.NewContext(r)
-	defer r.Body.Close()
-	var b bytes.Buffer
-	if _, err := b.ReadFrom(r.Body); err != nil {
-		log.Errorf(ctx, "Error reading body: %v", err)
-		return
-	}
-	log.Infof(ctx, "Received mail: %v", b)
-}
-
-// [END intro_4]
