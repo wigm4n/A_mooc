@@ -19,7 +19,6 @@ CREATE TABLE subscriptions (
   platforms       TEXT,
   languages       TEXT,
   levels          TEXT,
-  durations       TEXT,
   availabilities  TEXT,
   date            TIMESTAMP,
   frequency       INTEGER

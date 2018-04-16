@@ -29,8 +29,10 @@ func GetCourse(c *gin.Context) {
 					lang := entities.FoundCourses[i].Language
 					skill := entities.FoundCourses[i].SkillLvl
 					price := entities.FoundCourses[i].Price
-					// TODO получить длительность степика из курса
-					duration := "timeeee"
+					duration := getCourse.Courses[0].WorkLoad
+					if duration == "" {
+						duration = "-"
+					}
 
 					course = entities.Course{Title: title, Content: content, URL: url,
 						Host: entities.HostStepik, HostURL: entities.HostURLStepik, Language:lang,
@@ -39,30 +41,40 @@ func GetCourse(c *gin.Context) {
 				}
 				if entities.FoundCourses[i].Host == entities.HostUdacity {
 
-							title := entities.FoundCourses[i].Title
-							content := entities.FoundCourses[i].Content
-							url := entities.FoundCourses[i].URL
-							lang := entities.FoundCourses[i].Language
-							skill := entities.FoundCourses[i].SkillLvl
-							duration := entities.FoundCourses[i].Duration
-							price := entities.FoundCourses[i].Price
+					title := entities.FoundCourses[i].Title
+					content := entities.FoundCourses[i].Content
+					url := entities.FoundCourses[i].URL
+					lang := entities.FoundCourses[i].Language
+					skill := entities.FoundCourses[i].SkillLvl
+					duration := entities.FoundCourses[i].Duration
+					price := entities.FoundCourses[i].Price
 
-							course = entities.Course{Title: title, Content: content, URL: url,
-								Host: entities.HostUdacity, HostURL: entities.HostURLUdacity, Language:lang,
-								SkillLvl:skill, Duration:duration, Price:price}
+					course = entities.Course{Title: title, Content: content, URL: url,
+						Host: entities.HostUdacity, HostURL: entities.HostURLUdacity, Language: lang,
+						SkillLvl: skill, Duration: duration, Price: price}
 
+				}
+
+				if entities.FoundCourses[i].Host == entities.HostUdemy {
+					data := entities.GetDataUdemyTest("https://www.udemy.com/api-2.0/courses/" +
+						strconv.Itoa(entities.FoundCourses[i].IDUdemy) + "?fields[course]=title,headline,is_paid,num_lectures,url")
+
+					cost := "Платно"
+					if data.Is_Paid == false {
+						cost = "Бесплатно"
+					}
+					duration := strconv.Itoa(data.Num) + " лекций"
+
+					course = entities.Course{Title: data.Title, Content: data.Content, URL:entities.FoundCourses[i].URL,
+						Host: entities.HostUdemy, HostURL: entities.HostURLUdemy,
+						Language:entities.FoundCourses[i].Language,
+						SkillLvl:entities.FoundCourses[i].SkillLvl, Duration: duration, Price:cost}
 				}
 			}
 		}
 		auth.Render(c, gin.H{"title": course.Title,
 			"payload": course}, "course.html")
 
-		/*if course, err := getCourseById(courseID); err == nil {
-			render(c, gin.H{"title": course.Title,
-				"payload": course}, "course.html")
-		} else {
-			c.AbortWithError(http.StatusNotFound, err)
-		}*/
 	} else {
 		c.AbortWithStatus(http.StatusNotFound)
 	}
@@ -71,23 +83,23 @@ func GetCourse(c *gin.Context) {
 func SearchingRequest(c *gin.Context) {
 	searchRequest := c.PostForm("research")
 
-	platforms, languages, levels, durations, availabilities := GetParams(c)
-
-	// stepik: languages, level не учитывать, durations не учитывать, availabilities всегда бесплатно
-	// udacity: languages всегда англ, level, durations, availabilities
-	// udemy: languages, level, durations не учитывать, availabilities
+	platforms, languages, levels, availabilities := GetParams(c)
 
 	entities.FoundCourses = []entities.Course{}
+
+	if len(platforms) == 0 {
+		platforms = []string{ "Udacity", "Udemy", "Stepik" }
+	}
 
 	for i := 0; i < len(platforms); i++ {
 		if platforms[i] == entities.HostStepik {
 			if len(languages) == 2 || len(languages) == 0 {
-				coursesStepik := entities.GetStepicCourseByTitle(searchRequest, "", false)
+				coursesStepik := entities.GetStepicCourseByTitle(searchRequest, "", false, 20)
 				for i := 0; i < len(coursesStepik); i++ {
 					entities.FoundCourses = append(entities.FoundCourses, coursesStepik[i])
 				}
 			} else {
-				coursesStepik := entities.GetStepicCourseByTitle(searchRequest, languages[0], true)
+				coursesStepik := entities.GetStepicCourseByTitle(searchRequest, languages[0], true, 20)
 				for i := 0; i < len(coursesStepik); i++ {
 					entities.FoundCourses = append(entities.FoundCourses, coursesStepik[i])
 				}
@@ -95,14 +107,14 @@ func SearchingRequest(c *gin.Context) {
 		}
 
 		if platforms[i] == entities.HostUdacity {
-			coursesUdacity := entities.GetUdacityCourseByTitle(searchRequest, levels, durations, availabilities)
+			coursesUdacity := entities.GetUdacityCourseByTitle(searchRequest, levels, availabilities)
 			for i := 0; i < len(coursesUdacity); i++ {
 				entities.FoundCourses = append(entities.FoundCourses, coursesUdacity[i])
 			}
 		}
 
 		if platforms[i] == entities.HostUdemy {
-			coursesUdemy := entities.GetUdemyCourseByTitle(searchRequest)
+			coursesUdemy := entities.GetUdemyCourseByTitle(searchRequest, languages, levels, availabilities)
 			for i := 0; i < len(coursesUdemy); i++ {
 				entities.FoundCourses = append(entities.FoundCourses, coursesUdemy[i])
 			}
@@ -123,13 +135,11 @@ func ShowPersonalAreaPage(c *gin.Context) {
 		"title": "Личный кабинет", "payload": subs}, "personal-area.html")
 }
 
-func GetParams(c *gin.Context) (platforms []string, languages []string, levels []string,
-	durations []string, availabilities []string) {
+func GetParams(c *gin.Context) (platforms []string, languages []string, levels []string, availabilities []string) {
 
 	platforms_dict := []string{ "udacity", "udemy", "stepik" }
 	languages_dict := []string{ "rus", "eng" }
 	levels_dict := []string{ "beginner", "intermediate", "advanced" }
-	durations_dict := []string { "less_m", "one_three_m", "more_m" }
 	availabilities_dict := []string { "free", "chargeable" }
 
 	// Получение платформ
@@ -150,12 +160,6 @@ func GetParams(c *gin.Context) (platforms []string, languages []string, levels [
 			levels = append(levels, c.PostForm(levels_dict[i]))
 		}
 	}
-	// Получение длительностей
-	for i := 0; i < len(durations_dict); i++ {
-		if c.PostForm(durations_dict[i]) != "" {
-			durations = append(durations, c.PostForm(durations_dict[i]))
-		}
-	}
 	// Получение способы оплаты
 	for i := 0; i < len(availabilities_dict); i++ {
 		if c.PostForm(availabilities_dict[i]) != "" {
@@ -163,36 +167,4 @@ func GetParams(c *gin.Context) (platforms []string, languages []string, levels [
 		}
 	}
 	return
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-func CreateCourse(c *gin.Context) {
-	title := c.PostForm("title")
-	content := c.PostForm("content")
-	id, _ := entities.GetNumberOfCourses()
-	id += 1
-
-	course := entities.Course{ Title:title, Content:content, ID:id,
-	Host:entities.HostStepik, URL:entities.HostURLStepik}
-
-	if err := course.CreateCourse(); err == nil {
-		// If the article is created successfully, show success message
-		auth.Render(c, gin.H{
-			"title":   "Submission Successful",
-			"payload": course}, "index.html")
-	} else {
-		// if there was an error while creating the article, abort with an error
-		c.AbortWithStatus(http.StatusBadRequest)
-	}
 }

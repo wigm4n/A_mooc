@@ -30,9 +30,7 @@ var HostUdacity = "Udacity"
 var myClientUdacity = &http.Client{Timeout: 100 * time.Second}
 var languageUdacity = "English"
 
-func GetUdacityCourseByTitle (title string, levels []string, durations []string,
-	availabilities[]string) (courses []Course) {
-
+func GetUdacityCourseByTitle (title string, levels []string, availabilities[]string) (courses []Course) {
 
 	duration := ""
 	response := GetDataUdacity()

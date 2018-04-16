@@ -27,6 +27,7 @@ type CourseInStepik struct {
 	Host    	string
 	URL    		string
 	IsActive   	bool	`json:"is_active"`
+	WorkLoad    string  `json:"workload"`
 }
 
 type CourseInResult struct {
@@ -49,11 +50,9 @@ var priceStepik = "Бесплатно"
 //get url terminal:
 //curl -X POST -d "grant_type=client_credentials" -u"XiohmB3FE94BiQQw8huu2QzeqSF1SabDwMA9ZTvh:pjNHdemfaL01Yz0mhBgF2uVNX6YOPBepC0Jnj24E74yDTdBhBgkHSnL2ALagAeTwLaR9V4OzkdrXrHVFdwGaWTWvlQz1usDIQ81bqOxTJyqpSZJKWXOJF8yX0Z51gsvw" https://stepik.org/oauth2/token/
 
-func GetStepicCourseByTitle(title string, lang string, flag bool) (courses []Course) {
+func GetStepicCourseByTitle(title string, lang string, flag bool, count int) (courses []Course) {
 	pageNum := 0
 	hasNextPage := true
-	//For database
-	//lastID, _ := GetNumberOfCourses()
 	lastID := len(FoundCourses)
 
 	for hasNextPage {
@@ -80,7 +79,7 @@ func GetStepicCourseByTitle(title string, lang string, flag bool) (courses []Cou
 			Price:priceStepik, SkillLvl:skillLvlStepik}
 
 			courses = append(courses, courseForm)
-			if len(courses) >= 20 {
+			if len(courses) > count {
 				break
 			}
 		}

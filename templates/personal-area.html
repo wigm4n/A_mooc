@@ -26,18 +26,6 @@
                     <h5>Предпочитаемые платформы</h5>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="coursera" value="Coursera">
-                            Coursera
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="edx" value="edX">
-                            edX
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
                             <input class="form-check-input" type="checkbox" name="udacity" value="Udacity">
                             Udacity
                         </label>
@@ -92,30 +80,6 @@
                     </div>
                 </fieldset>
                 <fieldset class="form-group">
-                    <h5>Продолжительность курса</h5>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="less_m"
-                                   value="Менее одного месяца">
-                            Менее одного месяца
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="one_three_m"
-                                   value="От одного до трех месяцев">
-                            От одного до трех месяцев
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="more_m"
-                                   value="Более трех месяцев">
-                            Более трех месяцев
-                        </label>
-                    </div>
-                </fieldset>
-                <fieldset class="form-group">
                     <h5>Доступность</h5>
                     <div class="form-check">
                         <label class="form-check-label">
@@ -137,18 +101,23 @@
     <div class="col-lg-7" style="margin-top: 90px;">
       <h3>Список существующих подписок</h3>
          {{range .payload }}
-            <div class="card" style="margin-top: 30px;">
-                <div class="card-body">
-                    <h3 class="card-title">Тема: {{.Teg}}</h3>
-                    <h6 class="card-subtitle mb-2 text-muted">От: {{.Date.Day}} {{.Date.Month}} {{.Date.Year}}</h6>
-                    <label class="card-text">Площадка: <i>{{.Platforms}}</i></label><br>
-                    <label class="card-text">Языки: <i>{{.Languages}}</i></label><br>
-                    <label class="card-text">Уровень: <i>{{.Levels}}</i></label><br>
-                    <label class="card-text">Продолжительность: <i>{{.Durations}}</i></label><br>
-                    <label class="card-text">Доступность курса: <i>{{.Availabilities}}</i></label><br>
-                    <a href="#" class="card-link">Удалить подписку</a>
+                <div class="card" style="margin-top: 30px;">
+                    <div class="card-body">
+                        <h3 class="card-title">Тема: {{.Teg}}</h3>
+                        <h6 class="card-subtitle mb-2 text-muted">От: {{.Date.Day}} {{.Date.Month}} {{.Date.Year}},
+                            уведомления раз в {{.Frequency}} день (дней)</h6>
+                        <label class="card-text">Площадка: <i>{{.Platforms}}</i></label><br>
+                        <label class="card-text">Языки: <i>{{.Languages}}</i></label><br>
+                        <label class="card-text">Уровень: <i>{{.Levels}}</i></label><br>
+                        <label class="card-text">Оплата курса: <i>{{.Availabilities}}</i></label><br>
+                        <form action="/personal/area" method="POST">
+                            <button class="card-link" name="deleteId" value="{{.ID}}">Удалить подписку</button>
+                        </form>
+                        <form action="/personal/send" method="POST" style="margin-top: 7px;">
+                            <button class="card-link" name="sendId" value="{{.ID}}">Отправить уведомление сейчас</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
         {{end}}
     </div>
 </div>

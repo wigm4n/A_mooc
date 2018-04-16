@@ -9,22 +9,15 @@ import (
 var router *gin.Engine
 
 func main() {
-	// Set Gin to production mode
+
 	//gin.SetMode(gin.ReleaseMode)
 
-	// Set the router as the default one provided by Gin
 	router = gin.Default()
 
-	// Process the templates at the start so that they don't have to be loaded
-	// from the disk again. This makes serving HTML pages very fast.
 	router.LoadHTMLGlob("templates/*")
 
 	// Initialize the routes
 	initializeRoutes()
-
-	//req := "java"
-	//stepikWork(req)
-	//entities.GetUdacityCourseByTitle("Java")
 
 	// Start serving the application
 	router.Run()
@@ -68,17 +61,7 @@ func initializeRoutes() {
 	// Group article related routes together
 	articleRoutes := router.Group("/article")
 	{
-		// Handle GET requests at /article/view/some_article_id
 		articleRoutes.GET("/view/:article_id", handlers.GetCourse)
-
-		// Handle the GET requests at /article/create
-		// Show the article creation page
-		// Ensure that the user is logged in by using the middleware
-		articleRoutes.GET("/create", auth.EnsureLoggedIn(), handlers.ShowPersonalAreaPage)
-
-		// Handle POST requests at /article/create
-		// Ensure that the user is logged in by using the middleware
-		articleRoutes.POST("/create", auth.EnsureLoggedIn(), handlers.CreateCourse)
 	}
 
 	findRoutes := router.Group("/find")
@@ -89,5 +72,11 @@ func initializeRoutes() {
 	personalAreaRoutes := router.Group("/personal")
 	{
 		personalAreaRoutes.POST("/submitting", handlers.SubmitSubscription)
+
+		personalAreaRoutes.GET("/area", auth.EnsureLoggedIn(), handlers.ShowPersonalAreaPage)
+
+		personalAreaRoutes.POST("/area", auth.EnsureLoggedIn(), handlers.DeleteSub)
+
+		personalAreaRoutes.POST("/send", auth.EnsureLoggedIn(), handlers.SendEmail)
 	}
 }
